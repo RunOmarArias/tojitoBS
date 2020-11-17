@@ -1,0 +1,7 @@
+{
+  "name": "tojitoBS",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
