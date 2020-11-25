@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Mi negocio</ion-title>
+    <ion-buttons slot="end" routerLink="/ajustes">
+      <ion-chip>
+        <ion-avatar>
+          <img src="{{user.foto}}">
+        </ion-avatar>
+        <ion-label>{{user.nombre}}</ion-label>
+      </ion-chip>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-item>
+    <ion-label>{{neg.nombre}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>{{neg.eslogan}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>{{neg.direccion}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>{{neg.tel}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>{{neg.desc}}</ion-label>
+  </ion-item>
+
+</ion-content>
+
+<ion-footer>
+  <div style="float: left; width: 50%;">
+    <ion-button expand="block" color="purple" (click)="openModalservicios()">
+      Ver servicios
+    </ion-button>
+  </div>
+  <div style="float: left; width: 50%;">
+    <ion-button expand="block" color="orange" (click)="openModalMenu()">
+      Ver menú
+    </ion-button>
+  </div>
+</ion-footer>

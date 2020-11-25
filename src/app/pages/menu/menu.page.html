@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Agregar menú</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-item>
+    <ion-icon slot="start" name="restaurant"></ion-icon>
+    <ion-input type="text"
+              placeholder="Nombre del platillo"
+              [(ngModel)]="nombre">
+    </ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-icon slot="start" name="cash"></ion-icon>
+    <ion-input type="number"
+              placeholder="Precio del platillo"
+              [(ngModel)]="precio">
+    </ion-input>
+  </ion-item>
+  <ion-button (click)="addFood()" expand="block" color="orange">
+    Agregar al menú
+  </ion-button>
+
+  <ion-card *ngIf="menuFull.length != 0">
+    <ion-card-content>
+      <ion-item *ngFor="let item of menuFull">
+        <ion-label>{{item.nombre}}</ion-label>
+        <ion-label class="ion-text-right">$ {{item.precio}}</ion-label>
+        <ion-buttons slot="start">
+          <ion-button (click)="delete(item)">
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="menuFull.length == 0">
+    <ion-card-title class="ion-text-center">
+      <br>Los servicios que agregues se irán visualizando en esta sección<br><br>
+    </ion-card-title>
+  </ion-card>
+
+</ion-content>
+
+<ion-footer>
+  <ion-button (click)="saveMenu()" expand="block" color="purple">
+    Guardar menú
+  </ion-button>
+</ion-footer>

@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Agregar servicios</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-item>
+    <ion-icon slot="start" name="hand-left"></ion-icon>
+    <ion-input type="text"
+              placeholder="Agrega un servicio que ofrezcas"
+              [(ngModel)]="servicio">
+    </ion-input>
+    <ion-buttons slot="end">
+      <ion-button (click)="addService()">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-item>
+
+  <ion-card *ngIf="services.length != 0">
+    <ion-card-content>
+      <ion-item *ngFor="let item of services">
+        <ion-label>{{item}}</ion-label>
+        <ion-buttons slot="end">
+          <ion-button (click)="delete(item)">
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="services.length == 0">
+    <ion-card-title class="ion-text-center">
+      <br>Los servicios que agregues se irán visualizando en esta sección<br><br>
+    </ion-card-title>
+  </ion-card>
+
+</ion-content>
+
+<ion-footer>
+  <ion-button (click)="saveServices()" expand="block" color="purple">
+    Guardar servicios
+  </ion-button>
+</ion-footer>

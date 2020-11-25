@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registro - Etapa II</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+    <ion-card-content>
+      Muy bien <strong>{{user.nombre}}</strong>. <br>El registro para su negocio
+      <strong>{{negocio.nombre}}</strong> está por concluir, a continuación, llene
+      los campos que se le piden para finalizar el registro y comenzar a
+      disfrutar de los beneficios que le ofrecemos.
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <form #formulario="ngForm" class="intro">
+      <ion-item>
+        <ion-icon slot="start" name="megaphone"></ion-icon>
+        <ion-input
+        type="text"
+          name="eslogan"
+          placeholder="Ingresa el eslogan de tu negocio"
+          [(ngModel)]="negocio.eslogan"
+          required>
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-icon slot="start" name="pencil"></ion-icon>
+        <ion-input
+          type="text"
+          name="desc"
+          placeholder="Breve descripción de tu negocio"
+          [(ngModel)]="negocio.desc"
+          required>
+        </ion-input>
+      </ion-item>
+    </form>
+  </ion-card>
+
+  <ion-card>
+    <ion-button expand="block" color="primary" (click)="openModalServices()">
+      Agregar servicios
+    </ion-button>
+    <ion-button expand="block" color="orange" (click)="openModalMenu()">
+      Agregar menú
+    </ion-button>
+    <ion-button expand="block" color="warning" (click)="openActionSheet()">
+      Agregar fotografía
+    </ion-button>
+  </ion-card>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button (click)="envioNeg2()"
+                expand="block"
+                color="purple"
+                [disabled]="formulario.invalid"
+                [routerLink]="['/home/', user.id]">
+      Enviar solicitud
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

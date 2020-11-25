@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registro - Etapa I</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+    <ion-card-content>
+      Bienvenido <strong>{{user.nombre}}</strong> <br><br>
+      Estas muy cerca de poder disfrutar de los beneficios que te ofrecemos,
+      sólo algunos datos más y estarás listo. <br>
+      Tu dirección de correo <strong>{{user.correo}}</strong> ha quedado
+      registrada con éxito. A continuación, llene los campos que se le piden.
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <form #formulario="ngForm" class="intro">
+      <ion-item>
+        <ion-icon slot="start" name="storefront"></ion-icon>
+        <ion-input
+          type="text"
+          name="nombreneg"
+          placeholder="Ingresa el nombre de tu negocio"
+          [(ngModel)]="negocio.nombre"
+          required>
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-icon slot="start" name="map"></ion-icon>
+        <ion-input
+          type="text"
+          name="direccion"
+          placeholder="Ingresa la dirección de tu negocio"
+          [(ngModel)]="negocio.direccion"
+          required>
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-icon slot="start" name="call"></ion-icon>
+        <ion-input
+          type="text"
+          name="telefono"
+          minlength=10
+          maxlength=10
+          placeholder="Ingresa un teléfono del negocio"
+          [(ngModel)]="negocio.tel"
+          required>
+        </ion-input>
+      </ion-item>
+    </form>
+  </ion-card>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button (click)="envioNeg1()"
+                expand="block"
+                color="purple"
+                [disabled]="formulario.invalid"
+                [routerLink]="['/nego2/', user.id]">
+      Enviar solicitud de Etapa I
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

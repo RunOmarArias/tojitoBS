@@ -74,6 +74,40 @@
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
+
+  /**Orange**/
+  --ion-color-orange: #ff1b15;
+  --ion-color-orange-rgb: 255,27,21;
+  --ion-color-orange-contrast: #ffffff;
+  --ion-color-orange-contrast-rgb: 255,255,255;
+  --ion-color-orange-shade: #e01812;
+  --ion-color-orange-tint: #ff322c;
+
+  /**purple**/
+  --ion-color-purple: #940046;
+  --ion-color-purple-rgb: 148,0,70;
+  --ion-color-purple-contrast: #ffffff;
+  --ion-color-purple-contrast-rgb: 255,255,255;
+  --ion-color-purple-shade: #82003e;
+  --ion-color-purple-tint: #9f1a59;
+}
+
+.ion-color-orange{
+  --ion-color-base: var(--ion-color-orange) !important;
+  --ion-color-base-rgb: var(--ion-color-orange-rgb) !important;
+  --ion-color-contrast: var(--ion-color-orange-contrast) !important;
+  --ion-color-contrast-rgb: var(--ion-color-orange-contrast-rgb) !important;
+  --ion-color-shade: var(--ion-color-orange-shade) !important;
+  --ion-color-tint: var(--ion-color-orange-tint) !important;
+}
+
+.ion-color-purple{
+  --ion-color-base: var(--ion-color-purple) !important;
+  --ion-color-base-rgb: var(--ion-color-purple-rgb) !important;
+  --ion-color-contrast: var(--ion-color-purple-contrast) !important;
+  --ion-color-contrast-rgb: var(--ion-color-purple-contrast-rgb) !important;
+  --ion-color-shade: var(--ion-color-purple-shade) !important;
+  --ion-color-tint: var(--ion-color-purple-tint) !important;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -229,4 +263,17 @@
 
     --ion-card-background: #1e1e1e;
   }
+}
+
+@font-face {
+  font-family: 'PanettoneDEMO';
+  src: url('../assets/fonts/PanettoneDEMO.otf');
+}
+.Panettone{
+  font-family: "PanettoneDEMO";
+  font-size: 350%;
+}
+.PanettoneDEMO{
+  font-family: "PanettoneDEMO";
+  font-size: 200%;
 }

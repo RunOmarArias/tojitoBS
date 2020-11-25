@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Editar Menú</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-item>
+    <ion-icon slot="start" name="restaurant"></ion-icon>
+    <ion-input type="text"
+              placeholder="Nombre del platillo"
+              [(ngModel)]="nombre">
+    </ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-icon slot="start" name="cash"></ion-icon>
+    <ion-input type="number"
+              placeholder="Precio del platillo"
+              [(ngModel)]="precio">
+    </ion-input>
+  </ion-item>
+  <ion-button (click)="addFood()" expand="block" color="orange">
+    Agregar al menú
+  </ion-button>
+
+  <ion-item *ngFor="let food of menu">
+    <ion-label>{{food.nombre}}</ion-label>
+    <ion-label class="ion-text-right">{{food.precio}}</ion-label>
+  </ion-item>
+
+</ion-content>
+
+<ion-footer>
+  <div style="float: left; width: 50%;">
+    <ion-button expand="block" color="purple" (click)="cancel()">
+      Cancelar
+    </ion-button>
+  </div>
+  <div style="float: left; width: 50%;">
+    <ion-button expand="block" color="orange" routerLink="/register">
+      Guardar cambios
+    </ion-button>
+  </div>
+</ion-footer>
