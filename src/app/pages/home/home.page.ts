@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { LoadingController, ModalController, NavController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController, NavController } from '@ionic/angular';
 import { Negocio } from 'src/app/interface/negocio';
 import { Usuario } from 'src/app/interface/usuario';
+import { DataService } from 'src/app/services/data.service';
 import { EditmenuPage } from '../editmenu/editmenu.page';
 import { EditservicesPage } from '../editservices/editservices.page';
 
@@ -18,11 +19,13 @@ export class HomePage implements OnInit {
   neg = {} as Negocio;
 
   constructor(
-    private loadingCtrl: LoadingController,
     private afAuth: AngularFireAuth,
-    private navCtrl: NavController,
     private firestore: AngularFirestore,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private dataService: DataService,
+    private alertCtrl: AlertController,
+    private navCtrl: NavController,
+    private loadingCtrl: LoadingController
   ) { }
 
   ngOnInit() {
@@ -30,19 +33,60 @@ export class HomePage implements OnInit {
   }
 
   ionViewDidEnter(){
-    this.getBusinessById();
+    if(this.user.id == undefined){
+      this.checkBusiness(localStorage.getItem('id'));
+    }
+    else{
+      this.checkBusiness(this.user.id);
+      localStorage.setItem('id', this.user.id);
+    }
   }
 
   async getUser(){
     await this.afAuth.onAuthStateChanged( data => {
       this.user.id = data.uid;
+      this.user.correo = data.email;
       this.user.nombre = data.displayName;
       this.user.foto = data.photoURL;
     })
   }
 
-  async getBusinessById(){
-    this.firestore.doc("negocios/"+this.user.id).valueChanges().subscribe( data => {
+  async openAlert(){
+    const alert = await this.alertCtrl.create({
+      header: 'Parece que ocurrió algo...',
+      message: 'La cuenta '+this.user.correo+' no tiene un negocio asociado.<br>'+
+                'Deberá de eliminar la cuenta y volver a registrarse de manera correcta.',
+      buttons: [
+        {
+          text: 'Eliminar cuenta',
+          handler: () => {
+            this.deleteAccount();
+          }
+        }
+      ],
+      backdropDismiss: false
+    });
+    await alert.present();
+  }
+
+  async checkBusiness(id: string){
+    const docUser = this.firestore.collection("negocios").doc(id).ref;
+    docUser.get().then(data =>{
+      if(data.exists){
+        this.getBusinessById(id);
+      }
+      else{
+        this.openAlert();
+      }
+    });
+  }
+
+  async getBusinessById(id: string){
+    const loader = await this.loadingCtrl.create({
+      message: 'Cargando...'
+    });
+    await loader.present();
+    this.firestore.doc("negocios/"+id).valueChanges().subscribe( data => {
       this.neg.nombre = data["nombre"];
       this.neg.eslogan = data["eslogan"];
       this.neg.direccion = data["direccion"];
@@ -51,6 +95,7 @@ export class HomePage implements OnInit {
       this.neg.tel = data["tel"];
       this.neg.menu = data["menu"].menu;
     });
+    loader.dismiss();
   }
 
   async openModalMenu(){
@@ -73,16 +118,37 @@ export class HomePage implements OnInit {
     await modal.present();
   }
 
-  async singOut(){
+  logOut(){
+    this.dataService.singOut();
+  }
+
+  deleteAccount(){
+    this.eliminarUserColecc(this.user.id);
+    this.eliminarUserAuth();
+  }
+
+  //Eliminar usuario de la coleccion Usuarios
+  async eliminarUserColecc(id: string){
+    await this.firestore.collection("usuarios").doc(id).delete().then(d => {
+      console.log("Usuario eliminado con éxito de la colección.");
+    }).catch( e => {
+      console.log(e);
+    })
+  }
+
+  //Eliminar cuenta de usuario
+  async eliminarUserAuth(){
+    let user = this.afAuth.currentUser;
     let loader = this.loadingCtrl.create({
-      message: 'Cerrando sesión'
+      message: 'Eliminando cuenta...'
     });
     (await loader).present();
-    this.afAuth.signOut().then(() => {
-      console.log('Se ha cerrado la sesión');
-      this.navCtrl.navigateRoot('init');
-    }).catch( exit => {
-      console.log(exit);
+
+    (await user).delete().then( () => {
+      this.navCtrl.navigateBack('init');
+      console.log("Usuario eliminado de Autenticación");
+    }).catch(()=> {
+      this.dataService.showToast('Ha ocurrido un error, intente más tarde');
     });
     (await loader).dismiss();
   }

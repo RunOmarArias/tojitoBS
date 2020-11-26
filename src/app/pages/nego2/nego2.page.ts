@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { ActionSheetController, ModalController } from '@ionic/angular';
+import { ActionSheetController, ModalController, NavController } from '@ionic/angular';
 import { Negocio } from 'src/app/interface/negocio';
 import { Usuario } from 'src/app/interface/usuario';
 import { DataService } from 'src/app/services/data.service';
@@ -17,13 +17,18 @@ export class Nego2Page implements OnInit {
 
   user = {} as Usuario;
   negocio = {} as Negocio;
+  statusMen: boolean = true;
+  statusSer: boolean = true;
+  statusBotMen: string = "outline";
+  statusBotSer: string = "outline";
 
   constructor(
     private afAuth: AngularFireAuth,
     private firestore: AngularFirestore,
     private dataService: DataService,
     private modalCtrl: ModalController,
-    private actionSheetCtrl: ActionSheetController
+    private actionSheetCtrl: ActionSheetController,
+    private navCtrl: NavController
   ) { }
 
   ngOnInit() {
@@ -58,6 +63,8 @@ export class Nego2Page implements OnInit {
 
     const {data} = await modal.onDidDismiss();
     this.negocio.menu = data
+    this.statusMen = false;
+    this.statusBotMen = "solid";
     console.log(this.negocio.menu);
   }
 
@@ -69,6 +76,8 @@ export class Nego2Page implements OnInit {
 
     const {data} = await modal.onDidDismiss();
     this.negocio.servicios = data
+    this.statusSer = false;
+    this.statusBotSer = "solid";
     console.log(this.negocio.servicios);
   }
 
@@ -76,19 +85,9 @@ export class Nego2Page implements OnInit {
     const actionSheet = await this.actionSheetCtrl.create({
       header: 'Seleccionar archivo de...',
       buttons: [
-        {
-          text: 'Cámara',
-          icon: 'camera'
-        },
-        {
-          text: 'Galeria',
-          icon: 'image'
-        },
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          icon: 'close'
-        }
+        { text: 'Cámara', icon: 'camera' },
+        { text: 'Galeria', icon: 'image' },
+        { text: 'Cancelar', role: 'cancel', icon: 'close' }
       ]
     });
     await actionSheet.present();
@@ -96,7 +95,9 @@ export class Nego2Page implements OnInit {
 
   envioNeg2(){
     if (this.negocio.servicios.length!=0 && this.negocio.menu.length!=0) {
-      this.dataService.creaNegocio(this.negocio, this.user.id);
+      this.dataService.creaNegocio(this.negocio, this.user.id).then(() =>{
+        this.navCtrl.navigateRoot('home');
+      })
       this.dataService.showToast("Bienvenido a Tojito Business "+this.user.nombre)
     }
     else {

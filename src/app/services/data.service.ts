@@ -30,6 +30,7 @@ export class DataService {
     try{
       await this.afAuth.signInWithEmailAndPassword(us.correo, us.contrasena).then(data => {
         console.log(data);
+        this.navCtrl.navigateRoot('home');
       })
     }
     catch(e){
@@ -46,8 +47,8 @@ export class DataService {
     (await loader).present();
 
     try{
-      await this.afAuth.createUserWithEmailAndPassword(us.correo, us.contrasena).then(() => {
-        this.creaUsuario(us)
+      await this.afAuth.createUserWithEmailAndPassword(us.correo, us.contrasena).then(d => {
+        this.creaUsuario(us, d.user.uid)
         this.data(us);
       });
     }
@@ -78,13 +79,13 @@ export class DataService {
   }
 
   //Agrega usuario a su colección
-  async creaUsuario(us: Usuario){
+  async creaUsuario(us: Usuario, id: string){
     let loader = this.loadingCtrl.create({
       message: 'Por favor espere...'
     });
     (await loader).present();
     try{  
-      await this.firestore.collection("usuarios").add(us);
+      await this.firestore.collection("usuarios").doc(id).set(us);
     }
     catch(e){}
     (await loader).dismiss();
@@ -98,6 +99,21 @@ export class DataService {
     catch(e){
       this.showToast("Ocurrió un error, intente más tarde")
     }
+  }
+
+  //Cerrar sesión
+  async singOut(){
+    let loader = this.loadingCtrl.create({
+      message: 'Cerrando sesión'
+    });
+    (await loader).present();
+    this.afAuth.signOut().then(() => {
+      console.log('Se ha cerrado la sesión');
+      this.navCtrl.navigateRoot('init');
+    }).catch( exit => {
+      console.log(exit);
+    });
+    (await loader).dismiss();
   }
 
   //Mensaje

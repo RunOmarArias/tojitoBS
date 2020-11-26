@@ -41,13 +41,13 @@
   </ion-card>
 
   <ion-card>
-    <ion-button expand="block" color="primary" (click)="openModalServices()">
+    <ion-button expand="block" color="primary" fill="{{statusBotSer}}" (click)="openModalServices()">
       Agregar servicios
     </ion-button>
-    <ion-button expand="block" color="orange" (click)="openModalMenu()">
+    <ion-button expand="block" color="orange" fill="{{statusBotMen}}" (click)="openModalMenu()">
       Agregar menú
     </ion-button>
-    <ion-button expand="block" color="warning" (click)="openActionSheet()">
+    <ion-button expand="block" color="warning" fill="solid" (click)="openActionSheet()">
       Agregar fotografía
     </ion-button>
   </ion-card>
@@ -59,8 +59,7 @@
     <ion-button (click)="envioNeg2()"
                 expand="block"
                 color="purple"
-                [disabled]="formulario.invalid"
-                [routerLink]="['/home/', user.id]">
+                [disabled]="formulario.invalid && (statusMen && statusSer)">
       Enviar solicitud
     </ion-button>
   </ion-toolbar>

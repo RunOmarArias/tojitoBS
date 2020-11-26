@@ -32,17 +32,6 @@ export class LoginPage implements OnInit {
 
   entrar(){
     this.dataService.login(this.user);
-    const docUser = this.firestore.collection("negocios").doc(this.user.id).ref;
-    docUser.get().then(data =>{
-      if(data.exists){
-        this.getUser();
-        this.navCtrl.navigateRoot('home/'+this.user.id);
-      }
-      else{
-        this.dataService.showToast("Este usuario no tiene un negocio registrado.");
-      }
-    })
-
   }
 
 }

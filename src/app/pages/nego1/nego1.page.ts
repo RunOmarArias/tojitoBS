@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { NavController } from '@ionic/angular';
 import { Negocio } from 'src/app/interface/negocio';
 import { Usuario } from 'src/app/interface/usuario';
 import { DataService } from 'src/app/services/data.service';
@@ -16,7 +17,8 @@ export class Nego1Page implements OnInit {
 
   constructor(
     private dataService: DataService,
-    private afAuth: AngularFireAuth
+    private afAuth: AngularFireAuth,
+    private navCtrl: NavController
   ) { }
 
   ngOnInit() {
@@ -33,7 +35,9 @@ export class Nego1Page implements OnInit {
 
   envioNeg1(){
     console.log("Primeros datos de negocio");
-    this.dataService.creaNegocio(this.negocio, this.user.id);
+    this.dataService.creaNegocio(this.negocio, this.user.id).then(()=>{
+      this.navCtrl.navigateRoot('nego2/'+this.user.id);
+    })
   }
 
   async getBusinessById(){

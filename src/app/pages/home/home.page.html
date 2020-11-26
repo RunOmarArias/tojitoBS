@@ -26,9 +26,14 @@
   <ion-item>
     <ion-label>{{neg.tel}}</ion-label>
   </ion-item>
-  <ion-item>
-    <ion-label>{{neg.desc}}</ion-label>
-  </ion-item>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Descripción del negocio</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      {{neg.desc}}
+    </ion-card-content>
+  </ion-card>
 
 </ion-content>
 

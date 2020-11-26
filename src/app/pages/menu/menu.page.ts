@@ -31,7 +31,6 @@ export class MenuPage implements OnInit {
       this.menuFull.push(menu);
       this.nombre = null;
       this.precio = null;
-      console.log(this.menuFull);
     }
     else{
       this.dataService.showToast("Por favor, agrega el nombre y precio de tu platillo");
