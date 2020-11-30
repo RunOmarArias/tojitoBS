@@ -36,7 +36,13 @@ export class Nego2Page implements OnInit {
   }
 
   ionViewDidEnter(){
-    this.getBusinessById(this.user.id);
+    if(this.user.id == undefined){
+      this.getBusinessById(localStorage.getItem('id'));
+    }
+    else{
+      this.getBusinessById(this.user.id);
+      localStorage.setItem('id', this.user.id);
+    }
   }
 
   async getUser(){
@@ -62,10 +68,15 @@ export class Nego2Page implements OnInit {
     await modal.present();
 
     const {data} = await modal.onDidDismiss();
-    this.negocio.menu = data
-    this.statusMen = false;
-    this.statusBotMen = "solid";
-    console.log(this.negocio.menu);
+    if(data.menu.length != 0){
+      this.negocio.menu = data
+      this.statusMen = false;
+      this.statusBotMen = "solid";
+      console.log(this.negocio.menu);
+    }
+    else{
+      this.dataService.showToast("No se agregaron datos al meú, por favor, inserte algunos.")
+    }
   }
 
   async openModalServices(){
@@ -75,10 +86,15 @@ export class Nego2Page implements OnInit {
     await modal.present();
 
     const {data} = await modal.onDidDismiss();
-    this.negocio.servicios = data
-    this.statusSer = false;
-    this.statusBotSer = "solid";
-    console.log(this.negocio.servicios);
+    if(data.servicios.length != 0){
+      this.negocio.servicios = data
+      this.statusSer = false;
+      this.statusBotSer = "solid";
+      console.log(this.negocio.servicios);
+    }
+    else{
+      this.dataService.showToast("No se agregaron datos en los servicios, por favor, inserte algunos.")
+    }
   }
 
   async openActionSheet(){

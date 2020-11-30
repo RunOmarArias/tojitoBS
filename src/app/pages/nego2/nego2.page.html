@@ -59,7 +59,7 @@
     <ion-button (click)="envioNeg2()"
                 expand="block"
                 color="purple"
-                [disabled]="formulario.invalid && (statusMen && statusSer)">
+                [disabled]="formulario.invalid || (statusMen || statusSer)">
       Enviar solicitud
     </ion-button>
   </ion-toolbar>

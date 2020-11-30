@@ -22,6 +22,9 @@ export class Nego1Page implements OnInit {
   ) { }
 
   ngOnInit() {
+  }
+
+  ionViewDidEnter(){
     this.getUser();
   }
 
@@ -30,6 +33,7 @@ export class Nego1Page implements OnInit {
       this.user.id = data.uid;
       this.user.nombre = data.displayName;
       this.user.correo = data.email;
+      console.log(data);
     })
   }
 
