@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Agregar servicios</ion-title>
+    <ion-title>Agregar Servicios</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -22,7 +22,7 @@
   <ion-card *ngIf="services.length != 0">
     <ion-card-content>
       <ion-item *ngFor="let item of services">
-        <ion-label>{{item}}</ion-label>
+        <ion-label class="ion-text-wrap ion-text-capitalize">{{item}}</ion-label>
         <ion-buttons slot="end">
           <ion-button (click)="delete(item)">
             <ion-icon slot="icon-only" name="trash"></ion-icon>
@@ -42,6 +42,6 @@
 
 <ion-footer>
   <ion-button (click)="saveServices()" expand="block" color="purple">
-    Guardar servicios
+    Guardar Servicios
   </ion-button>
 </ion-footer>

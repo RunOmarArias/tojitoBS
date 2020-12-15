@@ -69,7 +69,7 @@ export class Nego2Page implements OnInit {
 
     const {data} = await modal.onDidDismiss();
     if(data.menu.length != 0){
-      this.negocio.menu = data
+      this.negocio.menu = data.menu
       this.statusMen = false;
       this.statusBotMen = "solid";
       console.log(this.negocio.menu);
@@ -87,7 +87,7 @@ export class Nego2Page implements OnInit {
 
     const {data} = await modal.onDidDismiss();
     if(data.servicios.length != 0){
-      this.negocio.servicios = data
+      this.negocio.servicios = data.servicios
       this.statusSer = false;
       this.statusBotSer = "solid";
       console.log(this.negocio.servicios);

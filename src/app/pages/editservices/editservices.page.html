@@ -1,10 +1,42 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>editservices</ion-title>
+    <ion-title>Editar Servicios</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+
+  <ion-item>
+    <ion-icon slot="start" name="hand-left"></ion-icon>
+    <ion-input type="text"
+              placeholder="Agrega un servicio que ofrezcas"
+              [(ngModel)]="servicio">
+    </ion-input>
+    <ion-buttons slot="end">
+      <ion-button (click)="addService()">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-item>
+
+  <ion-card *ngIf="auxService.length != 0">
+    <ion-card-content>
+      <ion-item *ngFor="let item of auxService">
+        <ion-label class="ion-text-wrap ion-text-capitalize">{{item}}</ion-label>
+        <ion-buttons slot="end">
+          <ion-button (click)="delete(item)">
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="auxService.length == 0">
+    <ion-card-title class="ion-text-center">
+      <br>Los servicios que agregues se irán visualizando en esta sección<br><br>
+    </ion-card-title>
+  </ion-card>
 
 </ion-content>
 
@@ -15,8 +47,8 @@
     </ion-button>
   </div>
   <div style="float: left; width: 50%;">
-    <ion-button expand="block" color="orange" (click)="cancel()">
-      Guardar cambios
+    <ion-button expand="block" color="orange" (click)="saveServices()">
+      Guardar Cambios
     </ion-button>
   </div>
 </ion-footer>

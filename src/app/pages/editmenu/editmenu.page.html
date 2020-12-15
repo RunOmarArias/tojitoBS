@@ -21,13 +21,28 @@
     </ion-input>
   </ion-item>
   <ion-button (click)="addFood()" expand="block" color="orange">
-    Agregar al menú
+    Agregar Al Menú
   </ion-button>
 
-  <ion-item *ngFor="let food of menu">
-    <ion-label>{{food.nombre}}</ion-label>
-    <ion-label class="ion-text-right">{{food.precio}}</ion-label>
-  </ion-item>
+  <ion-card *ngIf="auxMenu.length != 0">
+    <ion-card-content>
+      <ion-item *ngFor="let item of auxMenu">
+        <ion-label class="ion-text-wrap ion-text-capitalize">{{item.nombre}}</ion-label>
+        <ion-label class="ion-text-right">$ {{item.precio}}</ion-label>
+        <ion-buttons slot="start">
+          <ion-button (click)="delete(item)">
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="auxMenu.length == 0">
+    <ion-card-title class="ion-text-center">
+      <br>Los platillos que agregues se irán visualizando en esta sección<br><br>
+    </ion-card-title>
+  </ion-card>
 
 </ion-content>
 
@@ -38,8 +53,8 @@
     </ion-button>
   </div>
   <div style="float: left; width: 50%;">
-    <ion-button expand="block" color="orange" (click)="cancel()">
-      Guardar cambios
+    <ion-button expand="block" color="orange" (click)="saveMenu()">
+      Guardar Cambios
     </ion-button>
   </div>
 </ion-footer>

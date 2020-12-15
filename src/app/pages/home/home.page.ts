@@ -18,6 +18,12 @@ export class HomePage implements OnInit {
   user = {} as Usuario;
   neg = {} as Negocio;
 
+  slides = [
+    { img: 'assets/img/mujer.jpeg' },
+    { img: 'assets/img/pastel.jpeg' },
+    { img: 'assets/img/dinero.jpeg' }
+  ];
+
   constructor(
     private afAuth: AngularFireAuth,
     private firestore: AngularFirestore,
@@ -90,10 +96,10 @@ export class HomePage implements OnInit {
       this.neg.nombre = data["nombre"];
       this.neg.eslogan = data["eslogan"];
       this.neg.direccion = data["direccion"];
-      this.neg.servicios = data["servicios"].servicios;
+      this.neg.servicios = data["servicios"];
       this.neg.desc = data["desc"];
       this.neg.tel = data["tel"];
-      this.neg.menu = data["menu"].menu;
+      this.neg.menu = data["menu"];
     });
     loader.dismiss();
   }
@@ -106,6 +112,9 @@ export class HomePage implements OnInit {
       }
     });
     await modal.present();
+    await modal.onDidDismiss().then(()=>{
+      this.getBusinessById(this.user.id)
+    })
   }
 
   async openModalservicios(){
@@ -116,6 +125,9 @@ export class HomePage implements OnInit {
       }
     });
     await modal.present();
+    await modal.onDidDismiss().then(()=>{
+      this.getBusinessById(this.user.id)
+    })
   }
 
   logOut(){
@@ -123,34 +135,149 @@ export class HomePage implements OnInit {
   }
 
   deleteAccount(){
-    this.eliminarUserColecc(this.user.id);
-    this.eliminarUserAuth();
+    this.dataService.eliminarUserColecc(this.user.id);
   }
 
-  //Eliminar usuario de la coleccion Usuarios
-  async eliminarUserColecc(id: string){
-    await this.firestore.collection("usuarios").doc(id).delete().then(d => {
-      console.log("Usuario eliminado con éxito de la colección.");
-    }).catch( e => {
-      console.log(e);
-    })
-  }
 
-  //Eliminar cuenta de usuario
-  async eliminarUserAuth(){
-    let user = this.afAuth.currentUser;
-    let loader = this.loadingCtrl.create({
-      message: 'Eliminando cuenta...'
+  //----------------------------------------------------------------------------------------
+  //Actualizar nombre
+  async showAlertInputName() {
+    const alert = await this.alertCtrl.create({
+      header: "Nombre de mi negocio",
+      message: "Ingresa el nuevo nombre de tu negocio. <br><br>Actual:<br>"+this.neg.nombre,
+      inputs: [
+        {
+          type: 'text',
+          name: 'name',
+          placeholder: "Nuevo nombre"
+        }
+      ],
+      buttons: [
+        { text: 'Aceptar' },
+        { text: 'Cancelar' }
+      ],
+      backdropDismiss: false
     });
-    (await loader).present();
-
-    (await user).delete().then( () => {
-      this.navCtrl.navigateBack('init');
-      console.log("Usuario eliminado de Autenticación");
-    }).catch(()=> {
-      this.dataService.showToast('Ha ocurrido un error, intente más tarde');
-    });
-    (await loader).dismiss();
+    await alert.present();
+    let result = await alert.onDidDismiss();
+    let data = result.data.values.name;
+    if(data != ""){
+      this.dataService.updateDataName(data, this.user.id);
+    }
+    else{
+      this.dataService.showToast("No se hicieron cambios.");
+    }
   }
-
+  //Actualizar eslogan
+  async showAlertInputEslogan() {
+    const alert = await this.alertCtrl.create({
+      header: "Eslogan de mi negocio",
+      message: "Ingresa el nuevo eslogan de tu negocio. <br><br>Actual:<br>"+this.neg.eslogan,
+      inputs: [
+        {
+          type: 'text',
+          name: 'eslogan',
+          placeholder: "Nueva eslogan"
+        }
+      ],
+      buttons: [
+        { text: 'Aceptar' },
+        { text: 'Cancelar' }
+      ],
+      backdropDismiss: false
+    });
+    await alert.present();
+    let result = await alert.onDidDismiss();
+    let data = result.data.values.eslogan;
+    if(data != ""){
+      this.dataService.updateDataEslogan(data, this.user.id);
+    }
+    else{
+      this.dataService.showToast("No se hicieron cambios.");
+    }
+  }
+  //Actualizar direccion
+  async showAlertInputDir() {
+    const alert = await this.alertCtrl.create({
+      header: "Dirección de mi negocio",
+      message: "Ingresa la nueva dirección de tu negocio. <br><br>Actual:<br>"+this.neg.direccion,
+      inputs: [
+        {
+          type: 'text',
+          name: 'dir',
+          placeholder: "Nueva dirección"
+        }
+      ],
+      buttons: [
+        { text: 'Aceptar' },
+        { text: 'Cancelar' }
+      ],
+      backdropDismiss: false
+    });
+    await alert.present();
+    let result = await alert.onDidDismiss();
+    let data = result.data.values.dir;
+    if(data != ""){
+      this.dataService.updateDataDir(data, this.user.id);
+    }
+    else{
+      this.dataService.showToast("No se hicieron cambios.");
+    }
+  }
+  //Actualizar direccion
+  async showAlertInputTel() {
+    const alert = await this.alertCtrl.create({
+      header: "Teléfono de mi negocio",
+      message: "Ingresa el nuevo teléfono de tu negocio. <br><br>Actual:<br>"+this.neg.tel,
+      inputs: [
+        {
+          type: 'text',
+          name: 'tel',
+          placeholder: "Nuevo teléfono"
+        }
+      ],
+      buttons: [
+        { text: 'Aceptar' },
+        { text: 'Cancelar' }
+      ],
+      backdropDismiss: false
+    });
+    await alert.present();
+    let result = await alert.onDidDismiss();
+    let data = result.data.values.tel;
+    if(data != ""){
+      this.dataService.updateDataTel(data, this.user.id);
+    }
+    else{
+      this.dataService.showToast("No se hicieron cambios.");
+    }
+  }
+  //Actualizar direccion
+  async showAlertInputDesc() {
+    const alert = await this.alertCtrl.create({
+      header: "Descripción de mi negocio",
+      message: "Ingresa una descripción nueva de tu negocio. <br><br>Actual:<br>"+this.neg.desc,
+      inputs: [
+        {
+          type: 'text',
+          name: 'desc',
+          placeholder: "Nueva descripción"
+        }
+      ],
+      buttons: [
+        { text: 'Aceptar' },
+        { text: 'Cancelar' }
+      ],
+      backdropDismiss: false
+    });
+    await alert.present();
+    let result = await alert.onDidDismiss();
+    let data = result.data.values.desc;
+    if(data != ""){
+      this.dataService.updateDataDesc(data, this.user.id);
+    }
+    else{
+      this.dataService.showToast("No se hicieron cambios.");
+    }
+  }
 }
